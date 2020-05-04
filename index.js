@@ -2,35 +2,53 @@ let listPerso = []
 
 class Tournoi{
     constructor(listPerso){
-
+        this.concurents = listPerso;
     }
 
     start(){
-
+        while (this.concurents.length >= 2){
+            for(let i = 0; i < concurents.length; i++){
+                this.isDied(this.concurents[i],i);
+                this.canLevelUp(this.concurents[i])
+            }
+            for(let i = 0; i < this.concurents.length-1; i++){
+                
+            }
+        }
+        if(this.concurents.length == 0){
+            console.log("Eh bien, je crois qu'il n'y pas grand monde !");
+            return;
+        }
+        else{
+            this.winner = this.concurents[0];
+            console.log(`Le gagnant du tournoi est ${this.winner.nom} !`);
+            return;
+        }
     }
 
-    isDied(perso){
+    isDied(perso,i){
         if(perso.pointsDeVie <= 0){
             nobodyDied = false;
             loser = perso;
+            console.log(`${perso} vient de succomber !`);
+            delete this.concurents[i];
+            return;
         }
+        return;
     }
 
     fight(perso1,perso2){
-        while(i<20 && nobodyDied){
-            if (perso1.pointsDeVie <= 0){
-                nobodyDied = false;
-                winner = perso2;
-
-            }
-        }
+        let loser;
+        let nobodyDied = true;
+        this.isDied(perso1)
+        this.isDied(perso2)
     }
 
     canLevelUp(perso){
         if (perso.pointsEXP >= 10){
             perso.pointsEXP -= 10;
             perso.niveau += 1;
-            console.log(`Le combatant ${perso.nom} vient de level up ! Il est désormais niveau ${niveau} !`)
+            console.log(`Le combatant ${perso.nom} vient de level up ! Il est désormais niveau ${perso.niveau} !`)
         }
         return;
     }
@@ -52,8 +70,8 @@ class Personnage{
     }
 }
 
-myCarac = new Personnage(20,30,40,18,1,"Lucas")
+myCarac = new Personnage(20,30,40,18,1,"Lucas");
 
+monTournoi = new Tournoi([myCarac]);
 
-
-console.log(myCarac.description())
+monTournoi.start()
