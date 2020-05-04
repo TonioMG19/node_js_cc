@@ -3,6 +3,8 @@ let listPerso = []
 class Tournoi{
     constructor(listPerso){
         this.concurents = listPerso;
+        this.perso1;
+        this.perso2;
     }
 
     start(){
@@ -15,10 +17,10 @@ class Tournoi{
                 this.isDied(this.concurents[i],i);
                 this.canLevelUp(this.concurents[i])
             }
-            for(let i = 0; i < this.concurents.length/2-1; i++){
-                perso1 = this.concurents[i+i]
-                perso2 = this.concurents[i+i+1]
-                this.fight(perso1,perso2)
+            for(let i = 0; i < (this.concurents.length/2)-1; i++){
+                this.perso1 = this.concurents[i+i]
+                this.perso2 = this.concurents[i+i+1]
+                this.fight(this.perso1,this.perso2)
             }
         }
 
@@ -39,11 +41,36 @@ class Tournoi{
     }
 
     fight(perso1,perso2){
-        i = 0;
+        let i = 0;
+        let toRemove1,toRemove2 = 0;
         while(perso1.pointsDeVie > 0 && perso2.pointsDeVie > 0 && i < 20){
-            perso2.pointsDeVie -= ((perso1.pointsForce - perso2.pointsArmure) < 0 ? 0 : (perso1.pointsForce - perso2.pointsArmure));
-            perso1.pointsDeVie -= ((perso2.pointsForce - perso1.pointsArmure) < 0 ? 0 : (perso2.pointsForce - perso1.pointsArmure));
+            if(perso2.pointsArmure - perso1.pointsForce < 0){
+                toRemove1 = (perso1.pointsForce - perso2.pointsArmure);
+                perso2.pointsArmure = 0;
+            }else if(perso2.pointsArmure - perso1.pointsForce >= 0){
+                toRemove1 = 0;
+                perso2.pointsArmure -= perso1.pointsForce;
+            }
+
+            if(perso1.pointsArmure - perso2.pointsForce < 0){
+                toRemove2 = (perso2.pointsForce - perso1.pointsArmure);
+                perso1.pointsArmure = 0;
+            }else if(perso1.pointsArmure - perso2.pointsForce >= 0){
+                toRemove2 = 0;
+                perso1.pointsArmure -= perso2.pointsForce;
+            }
+
             i++;
+        }
+
+        if(perso1.pointsDeVie < 1){
+            perso2.pointsDeVie = perso2.maxVie;
+            perso2.pointsArmure = perso2.maxArmure;
+        }else if(perso2.pointsDeVie < 1){
+            perso1.pointsDeVie = perso1.maxVie;
+            perso1.pointsArmure = perso1.maxArmure;
+        }else if(i == 20){
+            if(perso1.pointsArmure + perso1.pointsDeVie + perso1.pointsForce > perso2.point)
         }
         return;
     }
@@ -61,7 +88,9 @@ class Tournoi{
 class Personnage{
     constructor(pointsDeVie,pointsArmure,pointsForce,pointsEXP,niveau,nom){
         this.pointsDeVie = pointsDeVie;
+        this.maxVie = pointsDeVie;
         this.pointsArmure = pointsArmure;
+        this.maxArmure = pointsArmure;
         this.pointsForce = pointsForce;
         this.pointsEXP = pointsEXP;
         this.niveau = niveau;
@@ -76,7 +105,9 @@ class Personnage{
 
 myCarac = new Personnage(20,30,40,18,1,"Lucas");
 otherCarac = new Personnage(20,50,6,19,2,"Jean");
+carac3 = new Personnage(84,65,41,20,1,"Lucien")
+carac4 = new Personnage(15,17,84,64,5,"Arouf")
 
-monTournoi = new Tournoi([myCarac,otherCarac]);
+monTournoi = new Tournoi([myCarac,otherCarac,carac3,carac4]);
 
 monTournoi.start()
