@@ -15,10 +15,11 @@ class Tournoi{
                 this.isDied(this.concurents[i],i);
                 this.canLevelUp(this.concurents[i])
             }
-            for(let i = 0; i < this.concurents.length-1; i++){
-
+            for(let i = 0; i < this.concurents.length/2-1; i++){
+                perso1 = this.concurents[i+i]
+                perso2 = this.concurents[i+i+1]
+                this.fight(perso1,perso2)
             }
-            this.concurents[0].pointsDeVie = 0;
         }
 
         if(this.concurents.length == 1){
@@ -30,18 +31,21 @@ class Tournoi{
 
     isDied(perso,i){
         if(perso.pointsDeVie <= 0){
-            console.log(`${perso} vient de succomber !`);
-            delete this.concurents[i];
+            console.log(`${perso.nom} vient de perdre !`);
+            this.concurents.splice(i,1)
             return;
         }
         return;
     }
 
     fight(perso1,perso2){
-        let loser;
-        let nobodyDied = true;
-        this.isDied(perso1)
-        this.isDied(perso2)
+        i = 0;
+        while(perso1.pointsDeVie > 0 && perso2.pointsDeVie > 0 && i < 20){
+            perso2.pointsDeVie -= ((perso1.pointsForce - perso2.pointsArmure) < 0 ? 0 : (perso1.pointsForce - perso2.pointsArmure));
+            perso1.pointsDeVie -= ((perso2.pointsForce - perso1.pointsArmure) < 0 ? 0 : (perso2.pointsForce - perso1.pointsArmure));
+            i++;
+        }
+        return;
     }
 
     canLevelUp(perso){
